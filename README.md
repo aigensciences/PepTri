@@ -1,6 +1,6 @@
 
 
-# <img width="20" height="20" alt="image" src="https://github.com/user-attachments/assets/142b1a54-723c-4de7-b2a1-ea5e8fc2723c" />PEPTRI: TRI-GUIDED ALL-ATOM DIFFUSION FOR PEPTIDE DESIGN VIA PHYSICS, EVOLUTION, AND MUTUAL INFORMATION
+<img src="path/to/image.png" alt="Alt text" width="50%"/>PEPTRI: TRI-GUIDED ALL-ATOM DIFFUSION FOR PEPTIDE DESIGN VIA PHYSICS, EVOLUTION, AND MUTUAL INFORMATION
 
 ## Overview
 
