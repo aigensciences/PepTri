@@ -1,0 +1,12 @@
+dataset:
+  test:
+    class: CoDesignDataset
+    mmap_dir: /home/ubuntu/quang/PepGLAD/datasets/train_valid/processed
+    specify_index: /home/ubuntu/quang/PepGLAD/datasets/train_valid/processed/train_index.txt
+    backbone_only: false
+
+dataloader:
+  num_workers: 2
+  batch_size: 32
+
+backbone_only: false

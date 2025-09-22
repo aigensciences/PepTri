@@ -1,0 +1,12 @@
+dataset:
+  test:
+    class: CoDesignDataset
+    mmap_dir: /home/ubuntu/quang/peptide_design/benchmark dataset/datasets/pepbdb/processed_filtered_30
+    specify_index: /home/ubuntu/quang/peptide_design/benchmark dataset/datasets/pepbdb/processed_filtered_30/train_index.txt
+    backbone_only: true
+
+dataloader:
+  num_workers: 2
+  batch_size: 32
+
+backbone_only: true

@@ -1,0 +1,158 @@
+dataset:
+  train:
+    class: CoDesignDataset
+    mmap_dir: /home/ubuntu/quang/peptide_design/benchmark dataset/datasets/pepbdb/processed_filtered_30
+    specify_index: /home/ubuntu/quang/peptide_design/benchmark dataset/datasets/pepbdb/processed_filtered_30/train_index.txt
+    backbone_only: false
+    # cluster: ./datasets/pepbdb/processed_filtered_30/train.cluster
+    use_covariance_matrix: true
+  valid:
+    class: CoDesignDataset
+    mmap_dir: /home/ubuntu/quang/peptide_design/benchmark dataset/datasets/pepbdb/processed_filtered_30
+    specify_index: /home/ubuntu/quang/peptide_design/benchmark dataset/datasets/pepbdb/processed_filtered_30/valid_index.txt
+    backbone_only: false
+    use_covariance_matrix: true
+
+dataloader:
+  shuffle: true
+  num_workers: 4
+  batch_size: 16
+  wrapper:
+    class: DynamicBatchWrapper
+    complexity: n**2
+    ubound_per_batch: 60000  # batch size ~32
+
+trainer:
+  class: LDMTrainer
+  criterion: Loss
+  config:
+    max_epoch: 400 # the best checkpoint should be obtained at around epoch 380
+    save_topk: 10
+    val_freq: 10
+    save_dir: ./ckpts/LDM_codesign
+    patience: 10
+    metric_min_better: true
+
+    optimizer:
+      class: AdamW
+      lr: 1.0e-4
+
+    scheduler:
+      class: ReduceLROnPlateau
+      factor: 0.6
+      patience: 3
+      mode: min
+      frequency: val_epoch
+      min_lr: 5.0e-6
+
+model:
+  class: LDMPepDesign
+  autoencoder_ckpt: ""
+  autoencoder_no_randomness: true
+  hidden_size: 128
+  num_steps: 100
+  n_layers: 3
+  n_rbf: 32
+  cutoff: 3.0 # the coordinates are in standard space
+  dist_rbf: 32
+  dist_rbf_cutoff: 7.0
+  
+  diffusion_opt:
+    trans_seq_type: Diffusion
+    trans_pos_type: Diffusion
+  max_gen_position: 32
+  # Enhanced physics-loss configuration (supported parameters)
+  use_physics_loss: true
+  physics_loss_weight: 0.15
+    
+  physics_config:
+    # Bond constraints (most important for stability)
+    bond_length_weight: 1.2
+    ideal_ca_ca_distance: 3.8  # Angstroms
+    ca_ca_tolerance: 0.25
+    
+    # Angular constraints (important for realistic geometry)
+    bond_angle_weight: 0.8
+    ideal_ca_angle: 109.5  # degrees
+    angle_tolerance: 18.0
+    
+    # Torsional constraints
+    torsion_weight: 0.4
+    ramachandran_weight: 0.6
+    
+    # Non-bonded interactions (critical for realistic structures)
+    vdw_weight: 0.6
+    vdw_sigma: 3.4  # Angstroms
+    vdw_epsilon: 0.12  # kcal/mol
+    
+    # Electrostatic interactions (important for charged residues)
+    electrostatic_weight: 0.5
+    dielectric_constant: 78.0  # Slightly lower for protein environment
+    coulomb_cutoff: 10.0  # Angstroms
+    
+    # Hydrogen bonding
+    hbond_weight: 0.7
+    hbond_distance_cutoff: 3.4  # Angstroms
+    hbond_angle_cutoff: 25.0  # degrees
+    
+    # Secondary structure preferences
+    secondary_structure_weight: 0.4
+    helix_preference_weight: 0.3
+    sheet_preference_weight: 0.3
+    
+    # Clash prevention (very important)
+    clash_weight: 1.8
+    min_distance: 2.1  # Angstroms
+    soft_clash_threshold: 2.7  # Angstroms
+    
+    # Solvent accessibility and hydrophobic effects
+    sasa_weight: 0.3
+    hydrophobic_weight: 0.4
+    
+    # Diffusion-specific constraints
+    diffusion_smoothness_weight: 0.25
+    temporal_consistency_weight: 0.3
+  
+  # Evolutionary guidance parameters (supported)
+  use_evolutionary_guidance: true
+  evolutionary_fitness_weight: 0.05
+  evolutionary_bias_weight: 0.02
+  use_conservation_bias: true
+  use_coevolution: true
+  
+  # Information-theoretic parameters (supported)
+  use_mutual_information: true
+  mi_weight: 0.1
+  mi_physics_weight: 0.05
+  
+  # OpenMM force field parameters (supported)
+  use_openmm_force_field: true
+  openmm_loss_weight: 0.01
+  openmm_guidance_scale: 0.001
+  openmm_force_guidance_scale: 0.0001
+
+  # ============ SE3 CONFIGURATION (TEMPORARILY DISABLED) ============
+  # Enable SE3-aware diffusion
+  use_se3_aware_diffusion: true  # Disabled until autoencoder SE3 indexing bug is fixed
+  
+  # SE3 feature dimension (8 global + 9 local = 17)
+  latent_enhanced_dim: 17
+  
+  # SE3 diffusion regularization weight
+  se3_diffusion_weight: 0.1
+  
+  # How to integrate SE3 features with base latent features
+  se3_latent_integration: 'concat'  # Options: 'concat', 'add', 'gated'
+  
+  # AutoEncoder SE3 feature enforcement
+  force_se3_features: false  # Set to true for strict SE3 checking
+  
+  # SE3-specific physics configuration
+  se3_physics_config:
+    rotation_invariance_weight: 0.1
+    translation_invariance_weight: 0.1
+    geometric_consistency_weight: 0.1
+    scale_invariance_weight: 0.05
+    local_frame_consistency_weight: 0.08
+    invariant_feature_weight: 0.05
+  # ====================================================
