@@ -62,14 +62,14 @@ conda env create -f environment.yml
    - Place your training data in the specified directory structure
    - Update paths in config files if using different locations
 
-## Training with run_train_pepbench_physics_epoc700.sh
+## Training with run_train.sh
 
 ### Quick Start
 
 To train the model with physics enhancement for 700 epochs:
 
 ```bash
-bash run_train_pepbench_physics_epoc700.sh 0 9901 pepbench_exp 1111 1 1 700
+bash run_train.sh 0 9901 pepbench_exp 1111 1 1 700
 ```
 
 ### Script Parameters
@@ -84,7 +84,8 @@ The training script accepts the following parameters:
 | MODE | 4 | 4-digit training mode flags | `1111` |
 | PHYSICS_FLAG | 5 | Enable physics constraints (1=yes, 0=no) | `1` |
 | RESUME | 6 | Resume from checkpoint (1=yes, 0=no) | `1` |
-| EPOCHS | 7 | Number of training epochs | `700` |
+| BATCH_SIZE | 7 | Batch size | `16` |
+| EPOCHS | 8 | Number of training epochs | `700` |
 
 #### MODE Parameter Details
 
