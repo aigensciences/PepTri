@@ -5,7 +5,7 @@
 ## Overview
 
 PepTri is a state-of-the-art peptide design framework that combines latent diffusion models with physics-based constraints and SE3-aware geometric features. This model generates novel peptide structures with physically realistic conformations, leveraging both deep learning and molecular physics principles.
-<img width="2005" height="935" alt="image" src="https://github.com/user-attachments/assets/fbba7929-a15b-44ed-b25f-98efeb41d3d1" />
+![PepTri](./assets/cover.png)
 
 
 ## Key Features
