@@ -1,6 +1,6 @@
 
 
-<img src="path/to/image.png" alt="Alt text" width="50%"/>PEPTRI: TRI-GUIDED ALL-ATOM DIFFUSION FOR PEPTIDE DESIGN VIA PHYSICS, EVOLUTION, AND MUTUAL INFORMATION
+<img src="./assets/trident.png" alt="Alt text" width="5%"/>PEPTRI: TRI-GUIDED ALL-ATOM DIFFUSION FOR PEPTIDE DESIGN VIA PHYSICS, EVOLUTION, AND MUTUAL INFORMATION
 
 ## Overview
 
@@ -234,5 +234,7 @@ dataset:
 - OpenMM for molecular force field calculations
 - PyTorch team for the deep learning framework
 
-<img width="524" height="524" alt="image" src="https://github.com/user-attachments/assets/c303be59-a085-4f2f-8dd8-4c2d9abfccd1" />
+<p align="center">
+  <img src="./assets/trident.png" alt="Tri guidance" width="30%">
+</p>
 
